@@ -1,7 +1,16 @@
-
-
 return {
-	"folke/which-key.nvim",
+	-- {
+	-- 	"folke/which-key.nvim",
+	-- 	keys = {
+	-- 		{
+	-- 			"<leader>?",
+	-- 			function()
+	-- 				require("which-key").show({ global = false })
+	-- 			end,
+	-- 			desc = "Buffer Local Keymaps (which-key)",
+	-- 		},
+	-- 	},
+	-- },
 	-- { "folke/neoconf.nvim", cmd = "Neoconf" },
 	-- "folke/neodev.nvim",
 	"nvim-lua/plenary.nvim",
@@ -16,7 +25,7 @@ return {
 		config = function()
 			require('Comment').setup()
 		end,
-		lazy=false
+		lazy = false
 	},
 	{
 		"nvim-neo-tree/neo-tree.nvim",
@@ -29,20 +38,30 @@ return {
 		},
 	},
 	{
-			's1n7ax/nvim-window-picker',
-			name = 'window-picker',
-			event = 'VeryLazy',
-			version = '2.*',
-			config = function()
-					require'window-picker'.setup({
-						hint = 'floating-big-letter'
-					})
-			end,
+		's1n7ax/nvim-window-picker',
+		name = 'window-picker',
+		event = 'VeryLazy',
+		version = '2.*',
+		config = function()
+			require 'window-picker'.setup({
+				hint = 'floating-big-letter'
+			})
+		end,
 	},
 	{
 		'connordeckers/tmux-navigator.nvim',
 		config = function()
-			require('tmux-navigator').setup { enable = true, DisableMapping=true }
+			require('tmux-navigator').setup { enable = true, DisableMapping = true }
 		end,
 	},
+	-- {
+	--   'MagicDuck/grug-far.nvim',
+	--   config = function()
+	--     require('grug-far').setup({
+	--       -- options, see Configuration section below
+	--       -- there are no required options atm
+	--       -- engine = 'ripgrep' is default, but 'astgrep' can be specified
+	--     });
+	--   end
+	-- },
 }

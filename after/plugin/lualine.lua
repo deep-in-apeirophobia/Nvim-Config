@@ -41,8 +41,8 @@ require('lualine').setup {
     lualine_a = { { 'mode', separator = { left = '' }, right_padding = 2 } },
     lualine_b = {
 			{
-				'buffers',
-				show_filename_only=false,
+				'filename',
+				path=1,
 
 				filetype_names = {
 					TelescopePrompt = 'Telescope',
@@ -52,6 +52,19 @@ require('lualine').setup {
 					alpha = 'Alpha'
 				},
 			},
+			'diagnostics',
+			-- {
+			-- 	'buffers',
+			-- 	show_filename_only=false,
+			--
+			-- 	filetype_names = {
+			-- 		TelescopePrompt = 'Telescope',
+			-- 		dashboard = 'Dashboard',
+			-- 		packer = 'Packer',
+			-- 		fzf = 'FZF',
+			-- 		alpha = 'Alpha'
+			-- 	},
+			-- },
 			'branch'
 		},
     lualine_c = {
