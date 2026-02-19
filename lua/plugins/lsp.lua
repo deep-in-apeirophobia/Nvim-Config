@@ -7,7 +7,7 @@ return {
 
 			---@diagnostic disable-next-line: missing-fields
 			require('nvim-treesitter.configs').setup {
-				ensure_installed = { 'bash', 'c', 'html', 'lua', 'markdown', 'vim', 'vimdoc', 'javascript', 'typescript', 'python' },
+				ensure_installed = { 'bash', 'c', 'html', 'lua', 'markdown', 'vim', 'vimdoc', 'javascript', 'typescript', 'python', 'go', 'rust' },
 				-- Autoinstall languages that are not installed
 				auto_install = true,
 				highlight = { enable = false },
@@ -48,6 +48,11 @@ return {
 		'hrsh7th/nvim-cmp',
 		event = 'InsertEnter',
 		dependencies = {
+			{ 'hrsh7th/cmp-omni' },
+			{ 'hrsh7th/cmp-nvim-lsp' },
+			{ 'hrsh7th/cmp-buffer' },
+			{ 'hrsh7th/cmp-path' },
+			{ 'hrsh7th/cmp-cmdline' },
 			{ 'L3MON4D3/LuaSnip' },
 		},
 		-- 	local cmp_mappings = lsp.defaults.cmp_mappings({
@@ -63,9 +68,15 @@ return {
 			local cmp = require('cmp')
 
 			cmp.setup({
-				sources = {
-					{ name = 'nvim_lsp' },
-				},
+				sources = cmp.config.sources({
+					{ name = 'lsp' },
+					-- { name = 'vsnip' }, -- For vsnip users.
+					-- { name = 'luasnip' }, -- For luasnip users.
+					-- { name = 'ultisnips' }, -- For ultisnips users.
+					-- { name = 'snippy' }, -- For snippy users.
+				}, {
+						{ name = 'buffer' },
+					}),
 				mapping = cmp.mapping.preset.insert({
 					['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
 					['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
@@ -148,27 +159,44 @@ return {
 			vim.opt.signcolumn = 'yes'
 		end,
 		config = function()
-			local lsp_defaults = require('lspconfig').util.default_config
-
-			-- Add cmp_nvim_lsp capabilities settings to lspconfig
-			-- This should be executed before you configure any language server
-			lsp_defaults.capabilities = vim.tbl_deep_extend(
-				'force',
-				lsp_defaults.capabilities,
-				require('cmp_nvim_lsp').default_capabilities()
-			)
-
-
+		-- 	local lsp_defaults = vim.lsp.config.util.default_config
+		--
+		-- 	-- Add cmp_nvim_lsp capabilities settings to lspconfig
+		-- 	-- This should be executed before you configure any language server
+		-- 	lsp_defaults.capabilities = vim.tbl_deep_extend(
+		-- 		'force',
+		-- 		lsp_defaults.capabilities,
+		-- 		require('cmp_nvim_lsp').default_capabilities()
+		-- 	)
+		--
+		--
 			require('mason-lspconfig').setup({
 				ensure_installed = {},
 				automatic_enable = {
 					'ts_ls',
+					'clangd',
+					'tailwindcss-intellisense',
+					'css-languageserver',
+					'css-languageserver',
+					'dockerfile-language-server-nodejs',
+					'gopls',
+					'golangci-lint-langserver',
+					'helm-ls',
+					'html-languageserver',
+					'biom',
+					'json-languageserver',
+					'ruff',
+					'pyls-all',
+					'pylsp',
+					'ruff-lsp',
 				},
 				handlers = {
 					-- this first function is the "default handler"
 					-- it applies to every language server without a "custom handler"
 					function(server_name)
-						require('lspconfig')[server_name].setup({})
+						vim.lsp.config(server_name, {
+							capabilities = require('cmp_nvim_lsp').default_capabilities()
+						})
 					end,
 				}
 			})

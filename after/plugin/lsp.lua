@@ -87,3 +87,92 @@ vim.api.nvim_create_autocmd('LspAttach', {
 			{ buffer = event.bufnr, remap = false, desc = "View help" })
 	end,
 })
+
+local lspconfig = vim.lsp.config
+local util = require("lspconfig.util")
+
+-- lspconfig.eslint.setup({
+-- 	root_dir = function(fname)
+-- 		local eslint_configs = {
+-- 			".eslintrc.js",
+-- 			".eslintrc.cjs",
+-- 			".eslintrc.yaml",
+-- 			".eslintrc.yml",
+-- 			".eslintrc.json",
+-- 			"eslint.config.js",
+-- 			"eslint.config.cjs",
+-- 			"eslint.config.ts",
+-- 			"eslint.config.cts",
+-- 			"package.json",
+-- 		}
+--
+-- 		return util.root_pattern(unpack(eslint_configs))(fname)
+-- 	end,
+--
+-- 	on_attach = function(client, bufnr)
+-- 		-- vim.notify("ESLint LSP attached.", vim.log.levels.INFO)
+-- 	end,
+--
+-- 	settings = {
+-- 		validate = {
+-- 			"javascript",
+-- 			"javascriptreact",
+-- 			"typescript",
+-- 			"typescriptreact",
+-- 		},
+-- 	},
+-- })
+
+vim.lsp.enable('ts_ls', { 
+	init_options = {
+		plugins = {
+			{
+				name = "@vue/typescript-plugin",
+				-- location = "/usr/local/lib/node_modules/@vue/typescript-plugin",
+				location = "/home/atrin/.nvm/versions/node/v20.19.4/lib/node_modules/@vue/typescript-plugin",
+				languages = { "javascript", "typescript", "vue" },
+			},
+		},
+	},
+	filetypes = {
+		"javascript",
+		"javascriptreact",
+		"typescript",
+		"typescriptreact",
+		"vue",
+	},
+})
+local base_on_attach = vim.lsp.config.eslint.on_attach
+vim.lsp.config("eslint", {
+  on_attach = function(client, bufnr)
+    if not base_on_attach then return end
+
+    base_on_attach(client, bufnr)
+    vim.api.nvim_create_autocmd("BufWritePre", {
+      buffer = bufnr,
+      command = "LspEslintFixAll",
+    })
+  end,
+})
+
+-- local capabilities = require('cmp_nvim_lsp').default_capabilities()
+
+vim.lsp.enable('clangd')
+vim.lsp.enable('tailwindcss-intellisense')
+vim.lsp.enable('css-languageserver')
+vim.lsp.enable('css-languageserver')
+vim.lsp.enable('dockerfile-language-server-nodejs')
+vim.lsp.enable('gopls')
+vim.lsp.enable('golangci-lint-langserver')
+vim.lsp.enable('helm-ls')
+vim.lsp.enable('html-languageserver')
+vim.lsp.enable('biom')
+vim.lsp.enable('json-languageserver')
+vim.lsp.enable('ruff')
+vim.lsp.enable('pyls-all')
+vim.lsp.enable('pylsp')
+vim.lsp.enable('ruff-lsp')
+
+vim.lsp.enable('lua-ls')
+
+-- lspconfig.volar.setup({})
